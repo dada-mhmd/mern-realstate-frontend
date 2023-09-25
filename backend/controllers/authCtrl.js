@@ -1,6 +1,7 @@
 import User from '../models/userModel.js'
 import bcrypt from 'bcryptjs'
 import asyncHandler from 'express-async-handler'
+import jwt from 'jsonwebtoken'
 
 // @desc Register a new user
 // @route POST /api/auth/signup
@@ -34,4 +35,39 @@ export const signup = asyncHandler(async (req, res) => {
     message: 'User registered successfully',
     newUser,
   })
+})
+
+// @desc login  user
+// @route POST /api/auth/sign-in
+// @access Public
+
+export const signin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body
+  // check if user exists
+  const user = await User.findOne({ email })
+  if (!user) {
+    throw new Error('User not found')
+  }
+
+  // compare password
+  const isPasswordMatched = await bcrypt.compare(password, user.password)
+  if (!isPasswordMatched) {
+    throw new Error('Invalid credentials')
+  }
+
+  // create token
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: '1d',
+  })
+
+  // remove password before sending request
+  const { password: pass, ...userInfo } = user._doc
+
+  res
+    .cookie('access_token', token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    })
+    .status(200)
+    .json(userInfo)
 })
