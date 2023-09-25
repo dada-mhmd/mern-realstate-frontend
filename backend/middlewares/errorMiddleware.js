@@ -1,16 +1,19 @@
-export const errorMiddleware = (err, req, res, next) => {
-  const statusCode = err.statusCode || 500
-  const message = err.message || 'Internal server error'
-  return res.status(statusCode).json({
-    success: false,
+export const globalErrHandler = (err, req, res, next) => {
+  const stack = err?.stack
+  const statusCode = err?.statusCode ? err?.statusCode : 500
+  const message = err?.message
+
+  res.status(statusCode).json({
     statusCode,
     message,
+    stack,
   })
 }
 
-export const errorHandler = (statusCode, message) => {
-  const error = new Error()
-  error.statusCode = statusCode
-  error.message = message
-  return error
+// notfound error handler 404
+
+export const notFound = (req, res, next) => {
+  const error = new Error(`Route - ${req.originalUrl} not found`)
+  res.status(404)
+  next(error)
 }
