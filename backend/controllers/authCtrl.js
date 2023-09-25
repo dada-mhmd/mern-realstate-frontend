@@ -1,6 +1,6 @@
 import User from '../models/userModel.js'
 import bcrypt from 'bcryptjs'
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   try {
     const { username, email, password } = req.body
     // hash password
@@ -13,13 +13,13 @@ export const signup = async (req, res) => {
       password: hashedPassword,
     })
     if (newUser) {
-      return res.status(500).json({ message: 'User already exists' })
+      throw new Error('User already exists')
     }
     res.status(201).json({
       message: 'User created successfully',
       user: newUser,
     })
   } catch (error) {
-    res.status(500).json(error.message)
+    next(error)
   }
 }
