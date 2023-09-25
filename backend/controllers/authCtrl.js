@@ -63,11 +63,13 @@ export const signin = asyncHandler(async (req, res) => {
   // remove password before sending request
   const { password: pass, ...userInfo } = user._doc
 
-  res
-    .cookie('access_token', token, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    })
-    .status(200)
-    .json(userInfo)
+  res.cookie('access_token', token, {
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
+  })
+
+  res.json({
+    success: true,
+    userInfo,
+  })
 })

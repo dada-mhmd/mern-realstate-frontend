@@ -84,7 +84,7 @@ const SignUp = () => {
         </button>
       </form>
       <div className='flex items-center gap-1 mt-5'>
-        <p className='font-medium'>Have an account?</p>
+        <p className='font-medium'>Already have an account?</p>
         <Link to='/sign-in'>
           <span className='text-blue-700'>Login</span>
         </Link>
