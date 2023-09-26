@@ -1,5 +1,9 @@
-import express from 'express'
+import express from 'express';
+import { updateUser } from '../controllers/userCtrl.js';
+import { verifyToken } from '../utils/verifyToken.js';
 
-const router = express.Router()
+const router = express.Router();
 
-export default router
+router.put('/update/:id', verifyToken, updateUser);
+
+export default router;
