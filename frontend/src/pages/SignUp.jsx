@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BeatLoader } from 'react-spinners'
+import OAuth from '../components/OAuth'
 
 const SignUp = () => {
   const [formData, setFormData] = useState({})
@@ -82,6 +83,9 @@ const SignUp = () => {
             'Sign Up'
           )}
         </button>
+
+        {/* OAuth */}
+        <OAuth />
       </form>
       <div className='flex items-center gap-1 mt-5'>
         <p className='font-medium'>Already have an account?</p>
