@@ -9,9 +9,15 @@ import {
 } from 'firebase/storage';
 import { app } from './../firebase/firebase';
 import {
+  DeleteUserFailure,
+  DeleteUserStart,
+  DeleteUserSuccess,
   UpdateUserFailure,
   UpdateUserStart,
   UpdateUserSuccess,
+  SignOutStart,
+  SignOutSuccess,
+  SignOutFailure,
 } from '../redux/slices/userSlices/userSlice';
 
 const Profile = () => {
@@ -83,6 +89,40 @@ const Profile = () => {
     }
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(DeleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser?._id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(DeleteUserFailure(res?.message));
+        return;
+      }
+      dispatch(DeleteUserSuccess(data));
+    } catch (error) {
+      dispatch(DeleteUserFailure(error?.message));
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      dispatch(SignOutStart());
+      const res = await fetch('/api/auth/signout', {
+        method: 'GET',
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(SignOutFailure(res?.message));
+        return;
+      }
+      dispatch(SignOutSuccess(data));
+    } catch (error) {
+      dispatch(SignOutFailure(error?.message));
+    }
+  };
+
   return (
     <section className='p-3 w-full max-w-lg mx-auto'>
       <h1 className='text-center text-3xl font-semibold my-7'>Profile</h1>
@@ -148,8 +188,15 @@ const Profile = () => {
       </form>
 
       <div className='flex items-center justify-between mt-5'>
-        <span className='text-red-700 cursor-pointer'>Delete Account</span>
-        <span className='text-red-700 cursor-pointer'>Sign Out</span>
+        <span
+          onClick={handleDeleteUser}
+          className='text-red-700 cursor-pointer'
+        >
+          Delete Account
+        </span>
+        <span onClick={handleLogout} className='text-red-700 cursor-pointer'>
+          Sign Out
+        </span>
       </div>
 
       <p className='text-red-700 mt-5'>{error?.message}</p>

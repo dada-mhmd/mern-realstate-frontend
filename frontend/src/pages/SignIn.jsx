@@ -1,34 +1,34 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { BeatLoader } from 'react-spinners'
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { BeatLoader } from 'react-spinners';
 import {
   signInFailure,
   signInStart,
   signInSuccess,
-} from '../redux/slices/userSlices/userSlice'
-import OAuth from '../components/OAuth'
+} from '../redux/slices/userSlices/userSlice';
+import OAuth from '../components/OAuth';
 
 const SignIn = () => {
-  const [formData, setFormData] = useState({})
-  const { loading, error } = useSelector((state) => state.user)
+  const [formData, setFormData] = useState({});
+  const { loading, error } = useSelector((state) => state.user);
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value })
-  }
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       if (!formData.email || !formData.password) {
-        dispatch(signInFailure('Please fill in all fields'))
-        return
+        dispatch(signInFailure('Please fill in all fields'));
+        return;
       }
 
-      dispatch(signInStart())
+      dispatch(signInStart());
 
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
@@ -36,20 +36,20 @@ const SignIn = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-      })
-      const data = await res.json()
+      });
+      const data = await res.json();
 
       if (!data?.success) {
-        dispatch(signInFailure(data?.message))
-        return
+        dispatch(signInFailure(data?.message));
+        return;
       }
 
-      dispatch(signInSuccess(data))
-      navigate('/')
+      dispatch(signInSuccess(data.userInfo));
+      navigate('/');
     } catch (error) {
-      dispatch(signInFailure(error?.message))
+      dispatch(signInFailure(error?.message));
     }
-  }
+  };
 
   return (
     <section className='p-3 max-w-lg mx-auto'>
@@ -97,7 +97,7 @@ const SignIn = () => {
       </div>
       {error && <p className='text-red-500 text-xl'>{error}</p>}
     </section>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;
