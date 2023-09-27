@@ -6,6 +6,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   if (req.user.id !== req.params.id) {
     throw new Error('User not authorized');
   }
+
   if (req.body.password) {
     req.body.password = bcrypt.hashSync(req.body.password, 10);
   }
