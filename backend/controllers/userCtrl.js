@@ -1,4 +1,5 @@
 import User from '../models/userModel.js';
+import Listing from './../models/listingModel.js';
 import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 
@@ -39,4 +40,16 @@ export const deleteUser = asyncHandler(async (req, res) => {
     success: true,
     message: 'user has been deleted',
   });
+});
+
+// @desc Get user listings
+// @route GET /api/users/listings/:id
+// @access Private
+export const getUserListings = asyncHandler(async (req, res) => {
+  if (req.user.id !== req.params.id) {
+    throw new Error('User not authorized');
+  } else {
+    const listings = await Listing.find({ userRef: req.params.id });
+    res.status(200).json(listings);
+  }
 });
