@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
 import {
@@ -185,6 +186,13 @@ const Profile = () => {
         >
           {loading ? <BeatLoader color='#fff' /> : 'Update'}
         </button>
+
+        <Link
+          to={'/create-listing'}
+          className='bg-red-500 text-white rounded-lg p-3 uppercase hover:opacity-95 text-center'
+        >
+          Create Listing
+        </Link>
       </form>
 
       <div className='flex items-center justify-between mt-5'>

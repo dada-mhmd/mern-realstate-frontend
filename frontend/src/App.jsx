@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { About, Home, Profile, SignIn, SignUp } from './pages'
-import { Header } from './components'
-import PrivateRoute from './components/PrivateRoute'
+import { About, CreateListings, Home, Profile, SignIn, SignUp } from './pages';
+import { Header } from './components';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   return (
@@ -16,10 +16,11 @@ const App = () => {
 
         <Route element={<PrivateRoute />}>
           <Route path='/profile' element={<Profile />} />
+          <Route path='/create-listing' element={<CreateListings />} />
         </Route>
       </Routes>
     </BrowserRouter>
-  )
-}
+  );
+};
 
-export default App
+export default App;
