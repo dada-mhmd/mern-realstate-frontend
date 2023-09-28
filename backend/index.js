@@ -6,6 +6,7 @@ dotenv.config();
 
 import userRoutes from './routes/userRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import listingRoutes from './routes/listingRoutes.js';
 import { globalErrHandler, notFound } from './middlewares/errorMiddleware.js';
 
 // database
@@ -20,6 +21,7 @@ app.use(cookieParser());
 // routes
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/listing', listingRoutes);
 
 // error middlewares
 app.use(notFound);
