@@ -25,3 +25,20 @@ export const deleteListing = asyncHandler(async (req, res) => {
     message: 'Listing deleted',
   });
 });
+
+export const updateListing = asyncHandler(async (req, res) => {
+  const listing = await Listing.findById(req.params.id);
+  if (!listing) throw new Error('Listing not found');
+  if (req.user.id !== listing.userRef) {
+    throw new Error(
+      'User not authorized, you can only update your own listings'
+    );
+  }
+
+  const updatedListing = await Listing.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+  res.status(200).json(updatedListing);
+});
