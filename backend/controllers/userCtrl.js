@@ -53,3 +53,17 @@ export const getUserListings = asyncHandler(async (req, res) => {
     res.status(200).json(listings);
   }
 });
+
+//@desc get user
+//@route GET /api/users/:id
+//@access Private
+
+export const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  const { password: pass, ...rest } = user._doc;
+
+  res.status(200).json(rest);
+});
