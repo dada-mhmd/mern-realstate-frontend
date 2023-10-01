@@ -5,6 +5,7 @@ import { Header } from './components';
 import PrivateRoute from './components/PrivateRoute';
 import UpdateListing from './pages/listings/UpdateListing';
 import Listing from './pages/Listing';
+import Search from './pages/Search';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/about' element={<About />} />
         <Route path='/listing/:id' element={<Listing />} />
+        <Route path='/search' element={<Search />} />
 
         <Route element={<PrivateRoute />}>
           <Route path='/profile' element={<Profile />} />
